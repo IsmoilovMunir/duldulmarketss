@@ -1,34 +1,51 @@
 {
   "project_info": {
-    "project_number": "971186746694",
-    "project_id": "duldul-28e4a",
-    "storage_bucket": "duldul-28e4a.appspot.com"
+    "project_number": "415146141126",
+    "firebase_url": "https://duldul-f9359-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "duldul-f9359",
+    "storage_bucket": "duldul-f9359.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:971186746694:android:9df8fc7bc1ed41c58e2147",
+        "mobilesdk_app_id": "1:415146141126:android:4fffdccedc2b85edeb3ec7",
         "android_client_info": {
-          "package_name": "com.duldul.market"
+          "package_name": "com.duldul.markets"
         }
       },
       "oauth_client": [
         {
-          "client_id": "971186746694-67go25tnk5pbd5mhmtpfs5rdbp46mtml.apps.googleusercontent.com",
+          "client_id": "415146141126-4n1jcgucha1k0ma5meet4k5tmqk7f1qp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.duldul.markets",
+            "certificate_hash": "9ff6e54f9f6d50c953f09cdca44efbdeb397b36e"
+          }
+        },
+        {
+          "client_id": "415146141126-ercf7b2c4fi5e13r2c5ade5sj4k3mmbv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA9aexIWxpjas9zHBLUtelY2B3Cvswb1mk"
+          "current_key": "AIzaSyAwkUravQkiUo9yT09KVKdIMrMT54PSn-4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "971186746694-67go25tnk5pbd5mhmtpfs5rdbp46mtml.apps.googleusercontent.com",
+              "client_id": "415146141126-ercf7b2c4fi5e13r2c5ade5sj4k3mmbv.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "415146141126-7sk0jtg2og814ujtj6n363ri4l5bqomg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.duldul.markets",
+                "app_store_id": "12211221"
+              }
             }
           ]
         }

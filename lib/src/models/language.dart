@@ -13,7 +13,8 @@ class LanguagesList {
 
   LanguagesList() {
     this._languages = [
-      new Language("en", "English", "English", "assets/img/united-states-of-america.png"),
+      new Language("ru", "Russian", "English", "assets/img/united-states-of-america.png"),
+      new Language("en", "English", "Руский", "assets/img/united-states-of-america.png"),
       new Language("ar", "Arabic", "العربية", "assets/img/united-arab-emirates.png"),
       new Language("es", "Spanish", "Spana", "assets/img/spain.png"),
       new Language("fr", "French (France)", "Français - France", "assets/img/france.png"),
