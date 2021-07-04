@@ -6,16 +6,22 @@ import '../models/payment_method.dart';
 import '../repository/settings_repository.dart' as settingRepo;
 import '../repository/user_repository.dart' as userRepo;
 import 'cart_controller.dart';
+import '../models/cart.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../helpers/maps_util.dart';
 
 class DeliveryPickupController extends CartController {
   GlobalKey<ScaffoldState> scaffoldKey;
   model.Address deliveryAddress;
   PaymentMethodList list;
+  bool canDelivery;
+  double deliveryFeeCalculate;
 
   DeliveryPickupController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
     super.listenForCarts();
     listenForDeliveryAddress();
+
     print(settingRepo.deliveryAddress.value.toMap());
   }
 
@@ -86,5 +92,21 @@ class DeliveryPickupController extends CartController {
   @override
   void goCheckout(BuildContext context) {
     Navigator.of(state.context).pushNamed(getSelectedMethod().route);
+  }
+
+  void calculateDeliveryFeeNew(List<Cart> carts, String distance) async {
+    var dis = double.parse(distance);
+    print(dis);
+    if (dis <= carts[0].product.market.deliveryRange) {
+      toggleDelivery();
+      if (dis >= 6 && getDeliveryMethod().selected) {
+        //settingRepo.setting.value.deliveryFrom + 1
+        var km = dis.toInt() - 5; //settingRepo.setting.value.deliveryFrom
+        deliveryFeeCalculate =
+            (km * 10).toDouble(); // settingRepo.setting.value.Amount_for_km
+        calculateDeliveryFee(deliveryCalculate: deliveryFeeCalculate);
+      } else
+        calculateDeliveryFee();
+    }
   }
 }

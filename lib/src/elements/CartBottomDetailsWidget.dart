@@ -22,8 +22,15 @@ class CartBottomDetailsWidget extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-                boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), offset: Offset(0, -2), blurRadius: 5.0)]),
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(20),
+                    topLeft: Radius.circular(20)),
+                boxShadow: [
+                  BoxShadow(
+                      color: Theme.of(context).focusColor.withOpacity(0.15),
+                      offset: Offset(0, -2),
+                      blurRadius: 5.0)
+                ]),
             child: SizedBox(
               width: MediaQuery.of(context).size.width - 40,
               child: Column(
@@ -38,7 +45,9 @@ class CartBottomDetailsWidget extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
-                      Helper.getPrice(_con.subTotal, context, style: Theme.of(context).textTheme.subtitle1, zeroPlaceholder: '0')
+                      Helper.getPrice(_con.subTotal, context,
+                          style: Theme.of(context).textTheme.subtitle1,
+                          zeroPlaceholder: '0')
                     ],
                   ),
                   SizedBox(height: 5),
@@ -50,10 +59,12 @@ class CartBottomDetailsWidget extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
-                      if (Helper.canDelivery(_con.carts[0].product.market, carts: _con.carts))
-                        Helper.getPrice(_con.carts[0].product.market.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1, zeroPlaceholder: S.of(context).free)
-                      else
-                        Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1, zeroPlaceholder: S.of(context).free)
+                      //if (Helper.canDelivery(_con.carts[0].product.market, carts: _con.carts))
+                      Helper.getPrice(_con.deliveryFee, context,
+                          style: Theme.of(context).textTheme.subtitle1,
+                          zeroPlaceholder: S.of(context).free)
+                      //else
+                      //  Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1, zeroPlaceholder: S.of(context).free)
                     ],
                   ),
                   Row(
@@ -64,7 +75,8 @@ class CartBottomDetailsWidget extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
-                      Helper.getPrice(_con.taxAmount, context, style: Theme.of(context).textTheme.subtitle1)
+                      Helper.getPrice(_con.taxAmount, context,
+                          style: Theme.of(context).textTheme.subtitle1)
                     ],
                   ),
                   SizedBox(height: 10),
@@ -79,21 +91,29 @@ class CartBottomDetailsWidget extends StatelessWidget {
                           onPressed: () {
                             _con.goCheckout(context);
                           },
-                          disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
+                          disabledColor:
+                              Theme.of(context).focusColor.withOpacity(0.5),
                           padding: EdgeInsets.symmetric(vertical: 14),
-                          color: !_con.carts[0].product.market.closed ? Theme.of(context).accentColor : Theme.of(context).focusColor.withOpacity(0.5),
+                          color: !_con.carts[0].product.market.closed
+                              ? Theme.of(context).accentColor
+                              : Theme.of(context).focusColor.withOpacity(0.5),
                           shape: StadiumBorder(),
                           child: Text(
                             S.of(context).checkout,
                             textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                            style: Theme.of(context).textTheme.bodyText1.merge(
+                                TextStyle(
+                                    color: Theme.of(context).primaryColor)),
                           ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Helper.getPrice(_con.total, context,
-                            style: Theme.of(context).textTheme.headline4.merge(TextStyle(color: Theme.of(context).primaryColor)), zeroPlaceholder: 'Free'),
+                            style: Theme.of(context).textTheme.headline4.merge(
+                                TextStyle(
+                                    color: Theme.of(context).primaryColor)),
+                            zeroPlaceholder: 'Free'),
                       )
                     ],
                   ),

@@ -8,20 +8,33 @@ class Cart {
   double quantity;
   List<Option> options;
   String userId;
+  String dateDelivery;
+  String timeDelivery;
 
   Cart();
 
   Cart.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = jsonMap['id'].toString();
-      quantity = jsonMap['quantity'] != null ? jsonMap['quantity'].toDouble() : 0.0;
-      product = jsonMap['product'] != null ? Product.fromJSON(jsonMap['product']) : Product.fromJSON({});
-      options = jsonMap['options'] != null ? List.from(jsonMap['options']).map((element) => Option.fromJSON(element)).toList() : [];
+      quantity =
+          jsonMap['quantity'] != null ? jsonMap['quantity'].toDouble() : 0.0;
+      product = jsonMap['product'] != null
+          ? Product.fromJSON(jsonMap['product'])
+          : Product.fromJSON({});
+      options = jsonMap['options'] != null
+          ? List.from(jsonMap['options'])
+              .map((element) => Option.fromJSON(element))
+              .toList()
+          : [];
+      dateDelivery = jsonMap['variable'] != null ? jsonMap['variable'] : '';
+      timeDelivery = jsonMap['variable'] != null ? jsonMap['variable'] : '';
     } catch (e) {
       id = '';
       quantity = 0.0;
       product = Product.fromJSON({});
       options = [];
+      dateDelivery = '';
+      timeDelivery = '';
       print(CustomTrace(StackTrace.current, message: e));
     }
   }
@@ -33,6 +46,8 @@ class Cart {
     map["product_id"] = product.id;
     map["user_id"] = userId;
     map["options"] = options.map((element) => element.id).toList();
+    map["variable"] = dateDelivery;
+    map["variable"] = timeDelivery;
     return map;
   }
 

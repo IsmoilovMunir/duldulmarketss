@@ -21,22 +21,30 @@ ValueNotifier<Setting> setting = new ValueNotifier(new Setting());
 ValueNotifier<Address> deliveryAddress = new ValueNotifier(new Address());
 Coupon coupon = new Coupon.fromJSON({});
 final navigatorKey = GlobalKey<NavigatorState>();
+SharedPreferences prefs;
 
 Future<Setting> initSettings() async {
   Setting _setting;
-  final String url = '${GlobalConfiguration().getValue('api_base_url')}settings';
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url')}settings';
   try {
-    final response = await http.get(url, headers: {HttpHeaders.contentTypeHeader: 'application/json'});
-    if (response.statusCode == 200 && response.headers.containsValue('application/json')) {
+    final response = await http
+        .get(url, headers: {HttpHeaders.contentTypeHeader: 'application/json'});
+    if (response.statusCode == 200 &&
+        response.headers.containsValue('application/json')) {
       if (json.decode(response.body)['data'] != null) {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('settings', json.encode(json.decode(response.body)['data']));
+        prefs = await SharedPreferences.getInstance();
+        await prefs.setString(
+            'settings', json.encode(json.decode(response.body)['data']));
         _setting = Setting.fromJSON(json.decode(response.body)['data']);
         if (prefs.containsKey('language')) {
           _setting.mobileLanguage.value = Locale(prefs.get('language'), '');
         }
-        _setting.brightness.value = prefs.getBool('isDark') ?? false ? Brightness.dark : Brightness.light;
+        _setting.brightness.value = prefs.getBool('isDark') ?? false
+            ? Brightness.dark
+            : Brightness.light;
         setting.value = _setting;
+        print(prefs.getString('settings'));
         // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
         setting.notifyListeners();
       }
@@ -57,8 +65,14 @@ Future<dynamic> setCurrentLocation() async {
   Address _address = new Address();
   location.requestService().then((value) async {
     location.getLocation().then((_locationData) async {
-      String _addressName = await mapsUtil.getAddressName(new LatLng(_locationData?.latitude, _locationData?.longitude), setting.value.googleMapsKey);
-      _address = Address.fromJSON({'address': _addressName, 'latitude': _locationData?.latitude, 'longitude': _locationData?.longitude});
+      String _addressName = await mapsUtil.getAddressName(
+          new LatLng(_locationData?.latitude, _locationData?.longitude),
+          setting.value.googleMapsKey);
+      _address = Address.fromJSON({
+        'address': _addressName,
+        'latitude': _locationData?.latitude,
+        'longitude': _locationData?.longitude
+      });
       await changeCurrentLocation(_address);
       whenDone.complete(_address);
     }).timeout(Duration(seconds: 10), onTimeout: () async {
@@ -84,7 +98,8 @@ Future<Address> getCurrentLocation() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //await prefs.clear();
   if (prefs.containsKey('delivery_address')) {
-    deliveryAddress.value = Address.fromJSON(json.decode(prefs.getString('delivery_address')));
+    deliveryAddress.value =
+        Address.fromJSON(json.decode(prefs.getString('delivery_address')));
     return deliveryAddress.value;
   } else {
     deliveryAddress.value = Address.fromJSON({});

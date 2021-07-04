@@ -17,6 +17,8 @@ class ProductController extends ControllerMVC {
   Favorite favorite;
   bool loadCart = false;
   int current = 0;
+  String dateDelivery;
+  String timeDelivery;
   GlobalKey<ScaffoldState> scaffoldKey;
 
   ProductController() {
@@ -70,8 +72,11 @@ class ProductController extends ControllerMVC {
       this.loadCart = true;
     });
     var _newCart = new Cart();
+    _newCart.dateDelivery = dateDelivery;
+    _newCart.timeDelivery = timeDelivery;
     _newCart.product = product;
-    _newCart.options = product.options.where((element) => element.checked).toList();
+    _newCart.options =
+        product.options.where((element) => element.checked).toList();
     _newCart.quantity = this.quantity;
     // if product exist in the cart then increment quantity
     var _oldCart = isExistInCart(_newCart);
@@ -101,7 +106,8 @@ class ProductController extends ControllerMVC {
   }
 
   Cart isExistInCart(Cart _cart) {
-    return carts.firstWhere((Cart oldCart) => _cart.isSame(oldCart), orElse: () => null);
+    return carts.firstWhere((Cart oldCart) => _cart.isSame(oldCart),
+        orElse: () => null);
   }
 
   void addToFavorite(Product product) async {
@@ -135,7 +141,9 @@ class ProductController extends ControllerMVC {
     var _id = product.id;
     product = new Product();
     listenForFavorite(productId: _id);
-    listenForProduct(productId: _id, message: S.of(state.context).productRefreshedSuccessfuly);
+    listenForProduct(
+        productId: _id,
+        message: S.of(state.context).productRefreshedSuccessfuly);
   }
 
   void calculateTotal() {

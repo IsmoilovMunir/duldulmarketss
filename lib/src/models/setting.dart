@@ -26,6 +26,8 @@ class Setting {
   String appVersion;
   bool enableVersion = true;
   List<String> homeSections = [];
+  double minimum_orden;
+  double free_delivery;
 
   ValueNotifier<Brightness> brightness = new ValueNotifier(Brightness.light);
 
@@ -47,17 +49,42 @@ class Setting {
       mobileLanguage.value = Locale(jsonMap['mobile_language'] ?? "en", '');
       appVersion = jsonMap['app_version'] ?? '';
       distanceUnit = jsonMap['distance_unit'] ?? 'km';
-      enableVersion = jsonMap['enable_version'] == null || jsonMap['enable_version'] == '0' ? false : true;
-      defaultTax = double.tryParse(jsonMap['default_tax'] ?? '0') ?? 0.0; //double.parse(jsonMap['default_tax'].toString());
+      enableVersion =
+          jsonMap['enable_version'] == null || jsonMap['enable_version'] == '0'
+              ? false
+              : true;
+      defaultTax = double.tryParse(jsonMap['default_tax'] ?? '0') ??
+          0.0; //double.parse(jsonMap['default_tax'].toString());
       defaultCurrency = jsonMap['default_currency'] ?? '';
-      currencyDecimalDigits = int.tryParse(jsonMap['default_currency_decimal_digits'] ?? '2') ?? 2;
-      currencyRight = jsonMap['currency_right'] == null || jsonMap['currency_right'] == '0' ? false : true;
-      payPalEnabled = jsonMap['enable_paypal'] == null || jsonMap['enable_paypal'] == '0' ? false : true;
-      stripeEnabled = jsonMap['enable_stripe'] == null || jsonMap['enable_stripe'] == '0' ? false : true;
-      razorPayEnabled = jsonMap['enable_razorpay'] == null || jsonMap['enable_razorpay'] == '0' ? false : true;
+      currencyDecimalDigits =
+          int.tryParse(jsonMap['default_currency_decimal_digits'] ?? '2') ?? 2;
+      currencyRight =
+          jsonMap['currency_right'] == null || jsonMap['currency_right'] == '0'
+              ? false
+              : true;
+      payPalEnabled =
+          jsonMap['enable_paypal'] == null || jsonMap['enable_paypal'] == '0'
+              ? false
+              : true;
+      stripeEnabled =
+          jsonMap['enable_stripe'] == null || jsonMap['enable_stripe'] == '0'
+              ? false
+              : true;
+      razorPayEnabled = jsonMap['enable_razorpay'] == null ||
+              jsonMap['enable_razorpay'] == '0'
+          ? false
+          : true;
       for (int _i = 1; _i <= 12; _i++) {
-        homeSections.add(jsonMap['home_section_' + _i.toString()] != null ? jsonMap['home_section_' + _i.toString()] : 'empty');
+        homeSections.add(jsonMap['home_section_' + _i.toString()] != null
+            ? jsonMap['home_section_' + _i.toString()]
+            : 'empty');
       }
+      minimum_orden = jsonMap['minimum_orden'] != null
+          ? double.tryParse(jsonMap['minimum_orden'])
+          : 0.00;
+      free_delivery = jsonMap['free_delivery'] != null
+          ? double.tryParse(jsonMap['free_delivery'])
+          : 0.00;
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: e));
     }
