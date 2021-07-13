@@ -8,8 +8,6 @@ class Cart {
   double quantity;
   List<Option> options;
   String userId;
-  String dateDelivery;
-  String timeDelivery;
 
   Cart();
 
@@ -26,15 +24,11 @@ class Cart {
               .map((element) => Option.fromJSON(element))
               .toList()
           : [];
-      dateDelivery = jsonMap['variable'] != null ? jsonMap['variable'] : '';
-      timeDelivery = jsonMap['variable'] != null ? jsonMap['variable'] : '';
     } catch (e) {
       id = '';
       quantity = 0.0;
       product = Product.fromJSON({});
       options = [];
-      dateDelivery = '';
-      timeDelivery = '';
       print(CustomTrace(StackTrace.current, message: e));
     }
   }
@@ -46,8 +40,6 @@ class Cart {
     map["product_id"] = product.id;
     map["user_id"] = userId;
     map["options"] = options.map((element) => element.id).toList();
-    map["variable"] = dateDelivery;
-    map["variable"] = timeDelivery;
     return map;
   }
 

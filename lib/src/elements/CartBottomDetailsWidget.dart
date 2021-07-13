@@ -89,6 +89,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
                         child: MaterialButton(
                           elevation: 0,
                           onPressed: () {
+                            _con.setCal();
                             _con.goCheckout(context);
                           },
                           disabledColor:

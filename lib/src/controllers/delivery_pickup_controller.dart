@@ -16,6 +16,8 @@ class DeliveryPickupController extends CartController {
   PaymentMethodList list;
   bool canDelivery;
   double deliveryFeeCalculate;
+  String dateDelivery = '';
+  String timeDelivery = '';
 
   DeliveryPickupController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -91,7 +93,18 @@ class DeliveryPickupController extends CartController {
 
   @override
   void goCheckout(BuildContext context) {
-    Navigator.of(state.context).pushNamed(getSelectedMethod().route);
+    if (getDeliveryMethod().selected) {
+      settingRepo.prefs.setString('deliveryDate', dateDelivery);
+      settingRepo.prefs.setString('deliveryTime', timeDelivery);
+      Navigator.of(state.context).pushNamed(getSelectedMethod().route);
+    } else {
+      if (settingRepo.prefs.containsKey('deliveryDate')) {
+        settingRepo.prefs.remove('deliveryDate');
+        settingRepo.prefs.remove('deliveryTime');
+        Navigator.of(state.context).pushNamed(getSelectedMethod().route);
+      } else
+        Navigator.of(state.context).pushNamed(getSelectedMethod().route);
+    }
   }
 
   void calculateDeliveryFeeNew(List<Cart> carts, String distance) async {

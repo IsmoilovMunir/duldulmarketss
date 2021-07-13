@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:markets/src/models/route_argument.dart';
 import 'package:markets/src/models/setting.dart';
@@ -14,6 +16,7 @@ import '../repository/cart_repository.dart';
 import '../repository/coupon_repository.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 import '../repository/user_repository.dart';
+import '../models/calculations.dart';
 
 class CartController extends ControllerMVC {
   List<Cart> carts = <Cart>[];
@@ -31,6 +34,7 @@ class CartController extends ControllerMVC {
   double distanceResponse = 0.0;
   double distance;
   GlobalKey<ScaffoldState> scaffoldKey;
+  Calculations cal = new Calculations();
 
   CartController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -158,6 +162,18 @@ class CartController extends ControllerMVC {
     }, onDone: () {
       listenForCarts();
     });
+  }
+
+  void setCal() async {
+    //SharedPreferences prefs = await SharedPreferences.getInstance().
+    setState(() {
+      // cal.discount = couponDes.toString();
+      cal.subTotal = subTotal.toString();
+      cal.tax = taxAmount.toString();
+      cal.total = total.toString();
+      cal.fee = deliveryFee.toString();
+    });
+    settingsRepo.prefs.setString('calculations', json.encode(cal.toMap()));
   }
 
   incrementQuantity(Cart cart) {

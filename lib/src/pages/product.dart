@@ -280,59 +280,7 @@ class _ProductWidgetState extends StateMVC<ProductWidget> {
                                         )),
                                   ],
                                 ),
-                                //_con.product.market.availableForDateDelivery ?
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 3),
-                                  decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      borderRadius: BorderRadius.circular(24)),
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        showDatePicker(
-                                                context: context,
-                                                initialDate: DateTime.now(),
-                                                firstDate: DateTime.now(),
-                                                lastDate: DateTime(2030))
-                                            .then((value) {
-                                          print(value);
-                                          if (value != null) {
-                                            _con.dateDelivery =
-                                                DateFormat('dd-MM-yyyy')
-                                                    .format(value);
-                                            showTimePicker(
-                                                context: context,
-                                                initialTime: TimeOfDay.now(),
-                                                builder: (context, child) {
-                                                  return MediaQuery(
-                                                    data: MediaQuery.of(context)
-                                                        .copyWith(
-                                                            alwaysUse24HourFormat:
-                                                                true),
-                                                    child: child,
-                                                  );
-                                                }).then((value) => _con
-                                                    .timeDelivery =
-                                                value.format(context));
-                                          }
-                                        });
-                                        // print('$result');
-                                      },
-                                      child: Text(
-                                        'Delivery date: ' +
-                                            (_con.dateDelivery ?? '') +
-                                            ' ' +
-                                            (_con.timeDelivery ?? ''),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText2,
-                                      )),
-                                ),
-
-                                //dependencies: flutter_datetime_picker: ^1.5.1
-                                //: SizedBox(height: 0,),
                                 Divider(height: 20),
-
                                 Text(Helper.skipHtml(_con.product.description)),
                                 if (_con.product.optionGroups.isNotEmpty)
                                   ListTile(

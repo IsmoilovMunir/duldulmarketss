@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import '../../generated/l10n.dart';
@@ -12,11 +14,13 @@ import '../repository/order_repository.dart' as orderRepo;
 import '../repository/settings_repository.dart' as settingRepo;
 import '../repository/user_repository.dart' as userRepo;
 import 'cart_controller.dart';
+import '../models/calculations.dart';
 
 class CheckoutController extends CartController {
   Payment payment;
   CreditCard creditCard = new CreditCard();
   bool loading = true;
+  Calculations cal;
 
   CheckoutController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -36,9 +40,19 @@ class CheckoutController extends CartController {
 
   void addOrder(List<Cart> carts) async {
     Order _order = new Order();
+    if (settingRepo.prefs.containsKey('deliveryDate')) {
+      _order.dateDelivery = settingRepo.prefs.getString('deliveryDate');
+      _order.timeDelivery = settingRepo.prefs.getString('deliveryTime');
+    }
+
+    cal = Calculations.fromJSON(
+        json.decode(settingRepo.prefs.getString('calculations') ?? '{}'));
     _order.productOrders = <ProductOrder>[];
-    _order.tax = carts[0].product.market.defaultTax;
-    _order.deliveryFee = payment.method == 'Pay on Pickup' ? 0 : carts[0].product.market.deliveryFee;
+    _order.tax = double.parse(cal.tax); //carts[0].product.market.defaultTax;
+    _order.deliveryFee = double.parse(cal.fee);
+    // payment.method == 'Pay on Pickup'
+    //     ? 0
+    //     : carts[0].product.market.deliveryFee;
     OrderStatus _orderStatus = new OrderStatus();
     _orderStatus.id = '1'; // TODO default order status Id
     _order.orderStatus = _orderStatus;

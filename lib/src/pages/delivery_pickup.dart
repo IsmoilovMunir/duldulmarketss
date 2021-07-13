@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:intl/intl.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/delivery_pickup_controller.dart';
@@ -25,6 +26,8 @@ class DeliveryPickupWidget extends StatefulWidget {
 
 class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   DeliveryPickupController _con;
+  String dateDelivery = '';
+  String timeDelivery = '';
 
   _DeliveryPickupWidgetState() : super(DeliveryPickupController()) {
     _con = controller;
@@ -131,33 +134,99 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                         widget.routeArgument.param &&
                         Helper.canDelivery(_con.carts[0].product.market,
                             carts: _con.carts)
-                    ? DeliveryAddressesItemWidget(
-                        paymentMethod: _con.getDeliveryMethod(),
-                        address: _con.deliveryAddress,
-                        onPressed: (Address _address) {
-                          if (_con.deliveryAddress.id == null ||
-                              _con.deliveryAddress.id == 'null') {
-                            DeliveryAddressDialog(
-                              context: context,
-                              address: _address,
-                              onChanged: (Address _address) {
-                                _con.addAddress(_address);
+                    ? Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 20, bottom: 10, left: 20, right: 10),
+                            child: GestureDetector(
+                              onTap: () {
+                                showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime.now(),
+                                        lastDate: DateTime(2030))
+                                    .then((value) {
+                                  print(value);
+                                  if (value != null) {
+                                    _con.dateDelivery =
+                                        DateFormat('dd-MM-yyyy').format(value);
+                                    dateDelivery =
+                                        DateFormat('dd-MM-yyyy').format(value);
+                                    showTimePicker(
+                                        context: context,
+                                        initialTime: TimeOfDay.now(),
+                                        builder: (context, child) {
+                                          return MediaQuery(
+                                            data: MediaQuery.of(context)
+                                                .copyWith(
+                                                    alwaysUse24HourFormat:
+                                                        true),
+                                            child: child,
+                                          );
+                                        }).then((value) {
+                                      _con.timeDelivery = value.format(context);
+                                      timeDelivery = value.format(context);
+                                    });
+                                  }
+                                });
+                                // print('$result');
                               },
-                            );
-                          } else {
-                            _con.calculateDeliveryFeeNew(
-                                _con.carts, widget.routeArgument.heroTag);
-                          }
-                        },
-                        onLongPress: (Address _address) {
-                          DeliveryAddressDialog(
-                            context: context,
-                            address: _address,
-                            onChanged: (Address _address) {
-                              _con.updateAddress(_address);
+                              child: ListTile(
+                                contentPadding:
+                                    EdgeInsets.symmetric(vertical: 0),
+                                leading: Icon(
+                                  Icons.calendar_today,
+                                  color: Theme.of(context).hintColor,
+                                ),
+                                title: Text(
+                                  'Click to select delivery date',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.headline4,
+                                ),
+                                subtitle: Text(
+                                  'Delivery date: ' +
+                                      dateDelivery +
+                                      ' ' +
+                                      timeDelivery,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2
+                                      .merge(TextStyle(fontSize: 16)),
+                                ),
+                              ),
+                            ),
+                          ),
+                          DeliveryAddressesItemWidget(
+                            paymentMethod: _con.getDeliveryMethod(),
+                            address: _con.deliveryAddress,
+                            onPressed: (Address _address) {
+                              if (_con.deliveryAddress.id == null ||
+                                  _con.deliveryAddress.id == 'null') {
+                                DeliveryAddressDialog(
+                                  context: context,
+                                  address: _address,
+                                  onChanged: (Address _address) {
+                                    _con.addAddress(_address);
+                                  },
+                                );
+                              } else {
+                                _con.calculateDeliveryFeeNew(
+                                    _con.carts, widget.routeArgument.heroTag);
+                              }
                             },
-                          );
-                        },
+                            onLongPress: (Address _address) {
+                              DeliveryAddressDialog(
+                                context: context,
+                                address: _address,
+                                onChanged: (Address _address) {
+                                  _con.updateAddress(_address);
+                                },
+                              );
+                            },
+                          )
+                        ],
                       )
                     : NotDeliverableAddressesItemWidget()
               ],

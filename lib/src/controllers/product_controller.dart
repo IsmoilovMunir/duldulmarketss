@@ -17,8 +17,6 @@ class ProductController extends ControllerMVC {
   Favorite favorite;
   bool loadCart = false;
   int current = 0;
-  String dateDelivery;
-  String timeDelivery;
   GlobalKey<ScaffoldState> scaffoldKey;
 
   ProductController() {
@@ -72,8 +70,6 @@ class ProductController extends ControllerMVC {
       this.loadCart = true;
     });
     var _newCart = new Cart();
-    _newCart.dateDelivery = dateDelivery;
-    _newCart.timeDelivery = timeDelivery;
     _newCart.product = product;
     _newCart.options =
         product.options.where((element) => element.checked).toList();
